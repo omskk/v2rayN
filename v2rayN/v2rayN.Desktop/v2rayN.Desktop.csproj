@@ -8,10 +8,6 @@
 		<AssemblyName>v2rayN</AssemblyName>
 	</PropertyGroup>
 
-	<PropertyGroup Condition="$([MSBuild]::IsOSPlatform('OSX'))">
-		<DefineConstants>$(DefineConstants);__MACOS__</DefineConstants>
-	</PropertyGroup>
-
 	<ItemGroup>
 		<PackageReference Include="Avalonia.Controls.DataGrid">
 			<TreatAsUsed>true</TreatAsUsed>
