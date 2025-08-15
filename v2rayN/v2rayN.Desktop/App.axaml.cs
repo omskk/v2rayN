@@ -35,14 +35,16 @@ public partial class App : Application
             desktop.MainWindow = new MainWindow();
 
 #if __MACOS__
-            _trayIcon = new TrayIcon
+            if (Utils.IsOSX())
             {
-                Icon = new WindowIcon("v2rayN.Desktop/v2rayN.png"),
-                ToolTipText = "v2rayN",
-                IsVisible = true
-            };
+                _trayIcon = new TrayIcon
+                {
+                    Icon = new WindowIcon("v2rayN.Desktop/v2rayN.png"),
+                    ToolTipText = "v2rayN",
+                    IsVisible = true
+                };
 
-            _trayIcon.Menu = new NativeMenu();
+                _trayIcon.Menu = new NativeMenu();
             var showHideMenuItem = new NativeMenuItem("显示/隐藏窗口");
             showHideMenuItem.Click += (sender, args) =>
             {
@@ -64,6 +66,7 @@ public partial class App : Application
             var exitMenuItem = new NativeMenuItem("退出");
             exitMenuItem.Click += MenuExit_Click;
             ((NativeMenu)_trayIcon.Menu).Items.Add(exitMenuItem);
+        }
 #endif
         }
 
