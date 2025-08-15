@@ -294,8 +294,11 @@ public partial class MainWindow : WindowBase<MainWindowViewModel>
         switch (e.CloseReason)
         {
             case WindowCloseReason.OwnerWindowClosing or WindowCloseReason.WindowClosing:
-                e.Cancel = true;
-                ShowHideWindow(false);
+                if (!Utils.IsMacOS())
+                {
+                    e.Cancel = true;
+                    ShowHideWindow(false);
+                }
                 break;
 
             case WindowCloseReason.ApplicationShutdown or WindowCloseReason.OSShutdown:
@@ -422,12 +425,6 @@ public partial class MainWindow : WindowBase<MainWindowViewModel>
         }
         else
         {
-            if (Utils.IsLinux() && _config.UiItem.Hide2TrayWhenClose == false)
-            {
-                this.WindowState = WindowState.Minimized;
-                return;
-            }
-
             foreach (var ownedWindow in this.OwnedWindows)
             {
                 ownedWindow.Close();
