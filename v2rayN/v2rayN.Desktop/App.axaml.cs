@@ -1,7 +1,9 @@
 using Avalonia;
+using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
 using Splat;
+using System.Reactive.Disposables;
 using v2rayN.Desktop.Common;
 using v2rayN.Desktop.Views;
 
@@ -9,6 +11,8 @@ namespace v2rayN.Desktop;
 
 public partial class App : Application
 {
+    private TrayIcon? _trayIcon;
+
     public override void Initialize()
     {
         AvaloniaXamlLoader.Load(this);
@@ -29,6 +33,38 @@ public partial class App : Application
 
             desktop.Exit += OnExit;
             desktop.MainWindow = new MainWindow();
+
+#if __MACOS__
+            _trayIcon = new TrayIcon
+            {
+                Icon = new WindowIcon("v2rayN.Desktop/v2rayN.png"),
+                ToolTipText = "v2rayN",
+                IsVisible = true
+            };
+
+            _trayIcon.Menu = new NativeMenu();
+            var showHideMenuItem = new NativeMenuItem("显示/隐藏窗口");
+            showHideMenuItem.Click += (sender, args) =>
+            {
+                if (desktop.MainWindow.IsVisible)
+                {
+                    desktop.MainWindow.Hide();
+                }
+                else
+                {
+                    desktop.MainWindow.Show();
+                }
+            };
+            ((NativeMenu)_trayIcon.Menu).Items.Add(showHideMenuItem);
+
+            var importFromClipboardMenuItem = new NativeMenuItem("从剪贴板导入");
+            importFromClipboardMenuItem.Click += MenuAddServerViaClipboardClick;
+            ((NativeMenu)_trayIcon.Menu).Items.Add(importFromClipboardMenuItem);
+
+            var exitMenuItem = new NativeMenuItem("退出");
+            exitMenuItem.Click += MenuExit_Click;
+            ((NativeMenu)_trayIcon.Menu).Items.Add(exitMenuItem);
+#endif
         }
 
         base.OnFrameworkInitializationCompleted();
@@ -49,6 +85,9 @@ public partial class App : Application
 
     private void OnExit(object? sender, ControlledApplicationLifetimeExitEventArgs e)
     {
+#if __MACOS__
+        _trayIcon?.Dispose();
+#endif
     }
 
     private async void MenuAddServerViaClipboardClick(object? sender, EventArgs e)
