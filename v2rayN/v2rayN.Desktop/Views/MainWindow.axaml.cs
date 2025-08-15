@@ -294,11 +294,8 @@ public partial class MainWindow : WindowBase<MainWindowViewModel>
         switch (e.CloseReason)
         {
             case WindowCloseReason.OwnerWindowClosing or WindowCloseReason.WindowClosing:
-                if (!Utils.IsMacOS())
-                {
-                    e.Cancel = true;
-                    ShowHideWindow(false);
-                }
+                e.Cancel = true;
+                ShowHideWindow(false);
                 break;
 
             case WindowCloseReason.ApplicationShutdown or WindowCloseReason.OSShutdown:
