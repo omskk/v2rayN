@@ -11,9 +11,6 @@
 		<ApplicationIcon>Assets\v2rayN.ico</ApplicationIcon>
 	</PropertyGroup>
 
-	<PropertyGroup Condition="$([MSBuild]::IsOSPlatform('OSX'))">
-		<ApplicationIcon>v2rayN.icns</ApplicationIcon>
-	</PropertyGroup>
 
 	<ItemGroup>
 		<PackageReference Include="Avalonia.Controls.DataGrid">
@@ -52,9 +49,7 @@
 		<None Update="v2rayN.png">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>
-		<None Update="v2rayN.icns">
-			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</None>
+		<AvaloniaResource Include="v2rayN.icns" />
 	</ItemGroup>
 
 </Project>
