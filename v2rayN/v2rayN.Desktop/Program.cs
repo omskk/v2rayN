@@ -1,4 +1,5 @@
 using Avalonia;
+using Avalonia.Controls;
 using Avalonia.ReactiveUI;
 using v2rayN.Desktop.Common;
 
@@ -21,7 +22,7 @@ internal class Program
         }
 
         BuildAvaloniaApp()
-            .StartWithClassicDesktopLifetime(args);
+            .StartWithClassicDesktopLifetime(args, ShutdownMode.OnExplicitShutdown);
     }
 
     private static bool OnStartup(string[]? Args)
