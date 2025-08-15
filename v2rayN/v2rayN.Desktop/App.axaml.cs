@@ -29,6 +29,8 @@ public partial class App : Application
     {
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
+            desktop.ShutdownMode = ShutdownMode.OnExplicitShutdown;
+
             AppHandler.Instance.InitComponents();
 
             desktop.Exit += OnExit;
